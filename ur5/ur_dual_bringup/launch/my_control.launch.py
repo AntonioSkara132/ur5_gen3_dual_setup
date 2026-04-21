@@ -262,7 +262,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "controllers_file",
             default_value=PathJoinSubstitution(
-                [FindPackageShare("ur_simulation_gz"), "config", "myur_controller.yaml"]
+                [FindPackageShare("ur_dual_bringup"), "config", "myur_controller.yaml"]
             ),
             description="Absolute path to YAML file with the controllers configuration.",
         )
@@ -294,7 +294,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "description_file",
             default_value=PathJoinSubstitution(
-                [FindPackageShare("ur_simulation_gz"), "urdf", "ur_gz.urdf.xacro"]
+                [FindPackageShare("ur_dual_bringup"), "urdf", "ur_gz.urdf.xacro"]
             ),
             description="URDF/XACRO description file (absolute path) with the robot.",
         )

@@ -278,7 +278,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     rviz_config_file = PathJoinSubstitution(
-        [FindPackageShare("ur_simulation_gz"), "config", "moveit.rviz"]
+        [FindPackageShare("ur_dual_bringup"), "config", "moveit.rviz"]
     )
     
 
@@ -297,7 +297,8 @@ def launch_setup(context, *args, **kwargs):
         name='joint_state_publisher',
         parameters=[{
             'source_list': ['/ur/joint_states', '/kinova/joint_states'],
-            'rate': 100  # Publish at 30Hz
+            'rate': 100,  # Publish at 30Hz
+            'use_sim_time': True,
         }],
         # Ensure it publishes to the global /joint_states topic
         #remappings=[('/joint_states', 'joint_states')]
@@ -343,7 +344,7 @@ def generate_launch_description():
     # General configuration
     declared_arguments.append(DeclareLaunchArgument("description_file", default_value=PathJoinSubstitution([FindPackageShare("dual_description"), "urdf", "dual.urdf.xacro"])))
     
-    declared_arguments.append(DeclareLaunchArgument("ur_controllers_file", default_value=PathJoinSubstitution([FindPackageShare("ur_simulation_gz"), "config", "myur_controller.yaml"])))
+    declared_arguments.append(DeclareLaunchArgument("ur_controllers_file", default_value=PathJoinSubstitution([FindPackageShare("ur_dual_bringup"), "config", "myur_controller.yaml"])))
     declared_arguments.append(DeclareLaunchArgument("kinova_controllers_file", default_value=PathJoinSubstitution([FindPackageShare("dual_description"), "config", "kinova_controllers.yaml"])))
 
     declared_arguments.append(DeclareLaunchArgument("launch_rviz", default_value="true"))

@@ -6,7 +6,7 @@
   <xacro:arg name="prefix" default="ur_"/>
   
   <xacro:include filename="$(find dual_moveit_config)/srdf/gen3.srdf.xacro"/>
-  <xacro:include filename="$(find ur_simulation_gz)/srdf/ur_macro.srdf.xacro"/>
+  <xacro:include filename="$(find ur_dual_bringup)/srdf/ur_macro.srdf.xacro"/>
 
   <xacro:ur_srdf prefix="$(arg prefix)"/>
   <xacro:kinova_srdf/>
