@@ -13,6 +13,12 @@ The setup is intended for simulation and coordinated MoveIt 2 planning between b
 
 Before using this project, make sure the following dependencies are installed.
 
+### [Optional]
+For reproducibility use base docker image:
+```bash
+docker pull rocm/dev-ubuntu-24.04:7.2.2-complete
+```
+
 ### 1. Install `ros-jazzy-ur`
 
 Follow the official installation instructions from the Universal Robots ROS 2 driver repository.
@@ -92,10 +98,6 @@ ros2 launch kortex_dual my_control.launch.py \
 ---
 
 ### Terminal 3
-
-```bash
-export GZ_PARTITION=partition_3
-```
 
 Launch the dual MoveIt 2 setup:
 
