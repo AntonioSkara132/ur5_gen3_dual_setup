@@ -1,0 +1,15 @@
+/kinova/test_huge_joint_space_jump:
+  ros__parameters:
+
+    controller_name: "joint_trajectory_controller"
+    wait_sec_to_publish: 3
+
+    goal_offset: [0.5, 0.5, 0.0, 0.0, 0.0, 0.5]
+
+    joints:
+      - kinova_joint_1
+      - kinova_joint_2
+      - kinova_joint_3
+      - kinova_joint_4
+      - kinova_joint_5
+      - kinova_joint_6
