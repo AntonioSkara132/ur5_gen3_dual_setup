@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(ur_simulation_gz)
+project(ur_dual_bringup)
 
 find_package(ament_cmake REQUIRED)
 
