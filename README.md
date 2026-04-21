@@ -114,7 +114,7 @@ ros2 launch dual_ur_bringup dual_moveit2.launch.py
 *Add your project image/screenshot here.*
 
 ```md
-![Dual Robot Setup](images/rviz_image.png)
+![Dual Robot Setup](https://github.com/AntonioSkara132/ur5_gen3_dual_setup/blob/main/images/rviz_image.png)
 ```
 
 ---
