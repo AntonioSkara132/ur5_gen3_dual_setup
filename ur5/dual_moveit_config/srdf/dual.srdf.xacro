@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="$(arg name)">
+
+  <!-- robot name parameter -->
+  <xacro:arg name="name" default="dual"/>
+  <xacro:arg name="prefix" default="ur_"/>
+  
+  <xacro:include filename="$(find dual_moveit_config)/srdf/gen3.srdf.xacro"/>
+  <xacro:include filename="$(find ur_simulation_gz)/srdf/ur_macro.srdf.xacro"/>
+
+  <xacro:ur_srdf prefix="$(arg prefix)"/>
+  <xacro:kinova_srdf/>
+
+</robot>

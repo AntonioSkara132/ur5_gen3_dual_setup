@@ -1,0 +1,65 @@
+# These limits are used by MoveIt and augment/override the definitions in ur_description.
+#
+# While the robot does not inherently have any limits on joint accelerations (only on torques),
+# MoveIt needs them for time parametrization. They were chosen conservatively to work in most use
+# cases. For specific applications, higher values might lead to better execution performance.
+
+default_velocity_scaling_factor: 0.1
+default_acceleration_scaling_factor: 0.1
+
+
+
+joint_limits:
+  ur_shoulder_pan_joint:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  ur_shoulder_lift_joint:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  ur_elbow_joint:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  ur_wrist_1_joint:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  ur_wrist_2_joint:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  ur_wrist_3_joint:
+    has_acceleration_limits: true
+    max_acceleration: 5.0
+  kinova_joint_1:
+    has_velocity_limits: true
+    max_velocity: 1.3963000000000001
+    has_acceleration_limits: true
+    max_acceleration: 8.6
+  kinova_joint_2:
+    has_velocity_limits: true
+    max_velocity: 1.3963000000000001
+    has_acceleration_limits: true
+    max_acceleration: 8.6
+  kinova_joint_3:
+    has_velocity_limits: true
+    max_velocity: 1.3963000000000001
+    has_acceleration_limits: true
+    max_acceleration: 8.6
+  kinova_joint_4:
+    has_velocity_limits: true
+    max_velocity: 1.3963000000000001
+    has_acceleration_limits: true
+    max_acceleration: 8.6
+  kinova_joint_5:
+    has_velocity_limits: true
+    max_velocity: 1.2218
+    has_acceleration_limits: true
+    max_acceleration: 8.6
+  kinova_joint_6:
+    has_velocity_limits: true
+    max_velocity: 1.2218
+    has_acceleration_limits: true
+    max_acceleration: 8.6
+  kinova_joint_7:
+    has_velocity_limits: true
+    max_velocity: 1.2218
+    has_acceleration_limits: true
+    max_acceleration: 8.6

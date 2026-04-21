@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="dual">
+
+  <xacro:property name="name" value="dual"/>
+  <xacro:property name="ur_type" value="ur5e"/>
+  <xacro:property name="ur_prefix" value="ur_"/>
+  <xacro:property name="kinova_prefix" value="kinova_"/>
+
+  <xacro:property name="arm" value="gen3"/>
+  <xacro:property name="dof" value="7"/>
+  <xacro:property name="vision" value="false"/>
+  <xacro:property name="sim_gazebo" value="true"/>
+  <xacro:property name="kinova_base_xyz" value="1.2 0 0"/>
+
+  <xacro:property name="safety_limits" value="true"/>
+  <xacro:property name="safety_pos_margin" value="0.15"/>
+  <xacro:property name="safety_k_position" value="20"/>
+
+  <xacro:property name="ur_simulation_controllers" value="/home/ws/ros2_ws/install/ur_simulation_gz/share/ur_simulation_gz/config/myur_controller.yaml"/>
+  <xacro:property name="kinova_simulation_controllers" value="/home/ws/ros2_ws/install/dual_description/share/dual_description/config/kinova_controllers.yaml"/>
+
+  <xacro:include filename="$(find dual_description)/urdf/dual.urdf.xacro" />
+
+</robot>
