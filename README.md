@@ -47,13 +47,6 @@ sudo apt install ros-jazzy-moveit-visual-tools
 
 ---
 
-### 4. Install `ros-jazzy-control`
-
-```bash
-sudo apt install ros-jazzy-ros2-control ros-jazzy-ros2-controllers
-```
-
----
 
 ## Simulation Launch Instructions
 
@@ -104,10 +97,6 @@ Launch the dual MoveIt 2 setup:
 ```bash
 ros2 launch dual_ur_bringup dual_moveit2.launch.py
 ```
-
-> No additional arguments are required.
-
----
 
 ## Visualization
 
