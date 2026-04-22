@@ -19,23 +19,24 @@ For reproducibility use base docker image:
 docker pull rocm/dev-ubuntu-24.04:7.2.2-complete
 ```
 
-### 1. Install `ros-jazzy-ur`
+### 1. Install Ur5 driver and description
 
 Follow the official installation instructions from the Universal Robots ROS 2 driver repository.
 
 **Link:**
 
-> [PLACEHOLDER – official ros-jazzy-ur installation link]
+> [https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git]
+> [https://github.com/UniversalRobots/Universal_Robots_ROS2_Description]
 
 ---
 
-### 2. Install `ros2_kortex`
+### 2. Install Kinova driver
 
 Follow the official installation instructions from the Kortex ROS 2 repository.
 
 **Link:**
 
-> [PLACEHOLDER – official ros2_kortex installation link]
+> [https://github.com/Kinovarobotics/ros2_kortex]
 
 ---
 
