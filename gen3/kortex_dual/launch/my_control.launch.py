@@ -155,7 +155,8 @@ def launch_setup(context, *args, **kwargs):
         event_handler=OnProcessExit(
             target_action=joint_state_broadcaster_spawner,
             on_exit=[rviz_node],
-        )
+        ),
+        condition=IfCondition(launch_rviz)
     )
 
     robot_traj_controller_spawner = Node(
@@ -333,7 +334,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "description_file",
             default_value=PathJoinSubstitution(
-                [FindPackageShare("kortex_description"), "robots", "kinova.urdf.xacro"]
+                [FindPackageShare("kortex_dual"), "config", "kinova.urdf.xacro"]
             ),
             description="URDF/XACRO description file (absolute path) with the robot.",
         )
