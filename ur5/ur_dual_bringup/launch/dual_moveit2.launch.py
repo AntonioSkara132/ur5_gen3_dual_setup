@@ -123,6 +123,8 @@ def launch_setup(context, *args, **kwargs):
     #     ],
     #     #namespace=robot_namespace,
     # )
+
+
     
     robot_description = {"robot_description": robot_description_content}
     
@@ -256,6 +258,7 @@ def launch_setup(context, *args, **kwargs):
                 "use_sim_time": True,
                 #"publish_robot_description_semantic": publish_robot_description_semantic,
                 "robot_description": robot_description_content,
+                "publish_robot_description_semantic": True,
             },
         ],
         #remappings=[('/robot_description', rd_path), ('/joint_states', js_path)],
