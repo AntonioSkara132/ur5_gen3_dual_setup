@@ -19,23 +19,24 @@ For reproducibility use base docker image:
 docker pull rocm/dev-ubuntu-24.04:7.2.2-complete
 ```
 
-### 1. Install `ros-jazzy-ur`
+### 1. Install Ur5 driver and description
 
 Follow the official installation instructions from the Universal Robots ROS 2 driver repository.
 
 **Link:**
 
-> [PLACEHOLDER – official ros-jazzy-ur installation link]
+> [https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git]
+> [https://github.com/UniversalRobots/Universal_Robots_ROS2_Description]
 
 ---
 
-### 2. Install `ros2_kortex`
+### 2. Install Kinova driver
 
 Follow the official installation instructions from the Kortex ROS 2 repository.
 
 **Link:**
 
-> [PLACEHOLDER – official ros2_kortex installation link]
+> [https://github.com/Kinovarobotics/ros2_kortex]
 
 ---
 
@@ -47,13 +48,6 @@ sudo apt install ros-jazzy-moveit-visual-tools
 
 ---
 
-### 4. Install `ros-jazzy-control`
-
-```bash
-sudo apt install ros-jazzy-ros2-control ros-jazzy-ros2-controllers
-```
-
----
 
 ## Simulation Launch Instructions
 
@@ -74,7 +68,7 @@ export GZ_PARTITION=partition_1
 Launch UR5 control:
 
 ```bash
-ros2 launch dual_ur_bringup my_control.launch.py \
+ros2 launch ur_dual_bringup my_control.launch.py \
   namespace:=/ur \
   tf_prefix:=ur_
 ```
@@ -90,7 +84,7 @@ export GZ_PARTITION=partition_2
 Launch Kinova Gen3 control:
 
 ```bash
-ros2 launch kortex_dual my_control.launch.py \
+ros2 launch ur_kortex_dual my_control.launch.py \
   namespace:=/kinova \
   tf_prefix:=kinova_
 ```
@@ -105,17 +99,9 @@ Launch the dual MoveIt 2 setup:
 ros2 launch dual_ur_bringup dual_moveit2.launch.py
 ```
 
-> No additional arguments are required.
-
----
-
 ## Visualization
 
-*Add your project image/screenshot here.*
-
-```md
-![Dual Robot Setup](https://github.com/AntonioSkara132/ur5_gen3_dual_setup/blob/main/images/rviz_image.png)
-```
+![Dual Robot Setup](images/rviz_image.png)
 
 ---
 

@@ -49,9 +49,7 @@
   <!-- convert to property to use substitution in function -->
   <xacro:property name="initial_positions_file" default="$(arg initial_positions_file)"/>
 
-
   
-
   <!-- ur robot name parameter -->
   <xacro:arg name="ur_name" default="ur"/>
   <!-- import main macro -->
@@ -76,10 +74,6 @@
 
   <xacro:arg name="ur_simulation_controllers" default="" />
   <xacro:arg name="ros_namespace" default="" />
-
-
-
-
 
 
   <!-- create link fixed to the "world" -->
@@ -110,7 +104,7 @@
   </joint>
 
 
-  <link name="carrier">
+  <link name="ur_carrier">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0.17"/>
       <geometry>
@@ -126,15 +120,38 @@
     </collision>
   </link>    
 
-  <joint name="carrier_joint" type="fixed">
-    <origin xyz="1.2 0 -0.01" rpy="0 0 0"/>
+  <joint name="ur_carrier_joint" type="fixed">
+    <origin xyz="-0.1 0 -0.01" rpy="0 0 0"/>
     <parent link="ground_plane"/>
-    <child link="carrier"/>
+    <child link="ur_carrier"/>
+  </joint>
+  
+  <link name="kinova_carrier">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0.17"/>
+      <geometry>
+	<mesh filename="package://ur_dual_bringup/meshes/nosac.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+
+    </visual>
+
+    <collision>
+      <geometry>
+	<mesh filename="package://ur_dual_bringup/meshes/nosac.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>    
+
+  <joint name="kinova_carrier_joint" type="fixed">
+    <origin xyz="0.1 0 -0.01" rpy="0 0 3.14"/>
+    <parent link="ground_plane"/>
+    <child link="kinova_carrier"/>
   </joint>
 
 
+
   <xacro:load_robot
-    parent="world"
+    parent="kinova_carrier"
     arm="$(arg arm)"
     gripper="$(arg gripper)"
     gripper_joint_name="$(arg gripper_joint_name)"
@@ -157,7 +174,7 @@
     sim_isaac="$(arg sim_isaac)"
     initial_positions="${xacro.load_yaml(initial_positions_file)}"
     moveit_active="$(arg moveit_active)">
-    <origin xyz="0 0 0" rpy="0 0 0" />  <!-- position robot in the world -->
+    <origin xyz="0 0 0.18" rpy="0 -0.7838 0" />  <!-- position robot in the world -->
   </xacro:load_robot>
 
 
@@ -165,7 +182,7 @@
   <xacro:ur_robot
     name="$(arg ur_name)"
     tf_prefix="$(arg ur_prefix)"
-    parent="carrier"
+    parent="ur_carrier"
     joint_limits_parameters_file="$(arg joint_limit_params)"
     kinematics_parameters_file="$(arg kinematics_params)"
     physical_parameters_file="$(arg physical_params)"
@@ -175,7 +192,7 @@
     safety_k_position="$(arg safety_k_position)"
     force_abs_paths="true"
     >
-    <origin xyz="0 0 0.18" rpy="0 -0.785 0" />          <!-- position robot in the world -->
+    <origin xyz="0 0 0.18" rpy="0 -0.7838 0" />          <!-- position robot in the world -->
   </xacro:ur_robot>
 
 
