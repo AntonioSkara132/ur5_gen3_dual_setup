@@ -74,7 +74,7 @@ export GZ_PARTITION=partition_1
 Launch UR5 control:
 
 ```bash
-ros2 launch dual_ur_bringup my_control.launch.py \
+ros2 launch ur_dual_bringup my_control.launch.py \
   namespace:=/ur \
   tf_prefix:=ur_
 ```
@@ -90,7 +90,7 @@ export GZ_PARTITION=partition_2
 Launch Kinova Gen3 control:
 
 ```bash
-ros2 launch kortex_dual my_control.launch.py \
+ros2 launch ur_kortex_dual my_control.launch.py \
   namespace:=/kinova \
   tf_prefix:=kinova_
 ```
