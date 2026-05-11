@@ -177,18 +177,18 @@ def launch_setup(context):
         arguments=["-d", rviz_config_file],
     )
 
-    trajectory_until_node = Node(
-        package="ur_robot_driver",
-        executable="trajectory_until_node",
-        name="trajectory_until_node",
-        output="screen",
-        parameters=[
-            {
-                "motion_controller": initial_joint_controller,
-            },
-        ],
-        namespace=robot_namespace,
-    )
+    # trajectory_until_node = Node(
+    #     package="ur_robot_driver",
+    #     executable="trajectory_until_node",
+    #     name="trajectory_until_node",
+    #     output="screen",
+    #     parameters=[
+    #         {
+    #             "motion_controller": initial_joint_controller,
+    #         },
+    #     ],
+    #     namespace=robot_namespace,
+    # )
 
     # Spawn controllers
     def controller_spawner(controllers, active=True):
@@ -254,7 +254,7 @@ def launch_setup(context):
         urscript_interface,
         rsp,
         rviz_node,
-        trajectory_until_node,
+        #trajectory_until_node,
     ] + controller_spawners
 
     return nodes_to_start
