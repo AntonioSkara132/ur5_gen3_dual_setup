@@ -181,7 +181,7 @@
     sim_isaac="$(arg sim_isaac)"
     initial_positions="${xacro.load_yaml(initial_positions_file)}"
     moveit_active="$(arg moveit_active)">
-    <origin xyz="0 0 0.18" rpy="0 0.7838 3.1416" />  <!-- position robot in the world -->
+    <origin xyz="0 0 0" rpy="0 0.7838 3.1416" />  <!-- position robot in the world -->
   </xacro:load_robot>
 
 
@@ -199,7 +199,7 @@
     safety_k_position="$(arg safety_k_position)"
     force_abs_paths="true"
     >
-    <origin xyz="0 0 1.57" rpy="0 0 0" />          <!-- position robot in the world -->
+    <origin xyz="0 0 0" rpy="0 0 1.57" />          <!-- position robot in the world -->
   </xacro:ur_robot>
 
 

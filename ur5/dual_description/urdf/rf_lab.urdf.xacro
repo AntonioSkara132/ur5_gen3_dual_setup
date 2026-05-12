@@ -1,0 +1,200 @@
+<?xml version="1.0"?>
+<!--
+  rf_lab top-level description: world frame + welding desk + (conditionally) UR5e
+  with Proxxon drill, Kinova (UR10e placeholder), and KUKA KR10. Used for RViz
+  visualisation and TF tree validation. Gazebo bringup uses separate per-robot
+  URDFs so each robot can have its own gz_ros2_control plugin / namespace.
+
+  Conventions:
+    * world -> desk_link -> robot bases. desk_link is the right-front-top corner
+      of the desk, with desk extending into +X +Y.
+    * Each enabled robot has six scalar pose args: <robot>_x/y/z/roll/pitch/yaw,
+      expressed in desk_link frame.
+    * tf prefixes: ur5e_, kinova_, kr10_.
+-->
+<robot name="$(arg name)" xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:arg name="name" default="rf_lab"/>
+
+  <!-- macro libraries -->
+  <xacro:include filename="$(find rf_lab_setup)/urdf/rf_welding_desk_macro.xacro"/>
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+  <xacro:include filename="$(find rf_ur5e_description)/urdf/proxxon_drill_macro.xacro"/>
+  <xacro:include filename="$(find kortex_description)/robots/kortex_robot.xacro"/>
+  <!-- <xacro:include filename="$(find kuka_kr10_description)/urdf/kr10r1100sixx_macro.xacro"/> -->
+
+  <!-- which robots to spawn -->
+  <xacro:arg name="enable_ur5e"   default="true"/>
+  <xacro:arg name="enable_kinova" default="true"/>
+  <xacro:arg name="enable_kr10"   default="true"/>
+
+  <!-- desk pose in world (default: top of desk at z = 0.89, level) -->
+  <xacro:arg name="desk_x" default="0"/>
+  <xacro:arg name="desk_y" default="0"/>
+  <xacro:arg name="desk_z" default="0.89"/>
+  <xacro:arg name="desk_roll"  default="0"/>
+  <xacro:arg name="desk_pitch" default="0"/>
+  <xacro:arg name="desk_yaw"   default="0"/>
+
+  <!-- UR5e (with Proxxon drill) pose in desk_link frame -->
+  <xacro:arg name="ur5e_x" default="0.9"/>
+  <xacro:arg name="ur5e_y" default="0.7"/>
+  <xacro:arg name="ur5e_z" default="0.1"/>
+  <xacro:arg name="ur5e_roll"  default="0"/>
+  <xacro:arg name="ur5e_pitch" default="0"/>
+  <xacro:arg name="ur5e_yaw"   default="0"/>
+
+  <!-- Kinova (UR10e placeholder) pose in desk_link frame -->
+  <xacro:arg name="kinova_x" default="0.6"/>
+  <xacro:arg name="kinova_y" default="0.7"/>
+  <xacro:arg name="kinova_z" default="0.1"/>
+  <xacro:arg name="kinova_roll"  default="0"/>
+  <xacro:arg name="kinova_pitch" default="0"/>
+  <xacro:arg name="kinova_yaw"   default="0"/>
+
+  <!-- KR10 pose in desk_link frame (faces -Y in RSI start position) -->
+  <!-- <xacro:arg name="kr10_x" default="0.75"/> -->
+  <!-- <xacro:arg name="kr10_y" default="1.8"/> -->
+  <!-- <xacro:arg name="kr10_z" default="-0.4"/> -->
+  <!-- <xacro:arg name="kr10_roll"  default="0"/> -->
+  <!-- <xacro:arg name="kr10_pitch" default="0"/> -->
+  <!-- <xacro:arg name="kr10_yaw"   default="-1.5707963267948966"/> -->
+
+  <!-- ============================================================== -->
+  <!-- world -> desk -->
+  <!-- ============================================================== -->
+  <!-- create link fixed to the "world" -->
+  <link name="world" />
+
+  <xacro:rf_welding_desk parent="world">
+    <origin xyz="$(arg desk_x) $(arg desk_y) $(arg desk_z)"
+            rpy="$(arg desk_roll) $(arg desk_pitch) $(arg desk_yaw)"/>
+  </xacro:rf_welding_desk>
+
+
+  <link name="ur_carrier">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0.17"/>
+      <geometry>
+	<mesh filename="package://ur_dual_bringup/meshes/nosac.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+
+    </visual>
+
+    <collision>
+      <geometry>
+	<mesh filename="package://ur_dual_bringup/meshes/nosac.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>    
+
+  <joint name="ur_carrier_joint" type="fixed">
+    <origin xyz="0.6 0.7 -0.01" rpy="0 0 0"/>
+    <parent link="desk_link"/>
+    <child link="ur_carrier"/>
+  </joint>
+  
+  <link name="kinova_carrier">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0.17"/>
+      <geometry>
+	<mesh filename="package://ur_dual_bringup/meshes/nosac.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+
+    </visual>
+
+    <collision>
+      <geometry>
+	<mesh filename="package://ur_dual_bringup/meshes/nosac.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="kinova_carrier_joint" type="fixed">
+    <origin xyz="0.9 0.7 -0.01" rpy="0 0 3.14"/>
+    <parent link="desk_link"/>
+    <child link="kinova_carrier"/>
+  </joint>
+
+  <link name="tilted_frame"/>
+
+  <joint name="tilt_joint" type="fixed">
+    <parent link="ur_carrier"/>
+    <child link="tilted_frame"/>
+    <origin xyz="0 0 0.18" rpy="0 -0.7838 0"/>
+  </joint>
+
+
+
+  <!-- ============================================================== -->
+  <!-- UR5e + Proxxon drill (tf_prefix=ur5e_) -->
+  <!-- ============================================================== -->
+  <xacro:if value="$(arg enable_ur5e)">
+    <xacro:ur_robot
+      name="ur5e_proxxon"
+      tf_prefix="ur_"
+      parent="tilted_frame"
+      joint_limits_parameters_file="$(find ur_description)/config/ur5e/joint_limits.yaml"
+      kinematics_parameters_file="$(find ur_description)/config/ur5e/default_kinematics.yaml"
+      physical_parameters_file="$(find ur_description)/config/ur5e/physical_parameters.yaml"
+      visual_parameters_file="$(find ur_description)/config/ur5e/visual_parameters.yaml"
+      safety_limits="true"
+      safety_pos_margin="0.15"
+      safety_k_position="20">
+      <origin xyz="0 0 0" rpy="0 0 1.57" />
+    </xacro:ur_robot>
+
+    <xacro:proxxon_drill prefix="ur_" parent="ur_flange">
+      <origin xyz="0.2982178 0 0" rpy="${pi/2.0} 0 ${pi/2.0}"/>
+    </xacro:proxxon_drill>
+  </xacro:if>
+
+  <!-- ============================================================== -->
+  <!-- Kinova Gen3 7-DoF (prefix=kinova_), no gripper, no vision. -->
+  <!-- We instantiate the kortex load_robot with sim_gazebo=false here so the -->
+  <!-- view URDF stays free of the gz plugin block; the lab Gazebo bringup -->
+  <!-- uses kinova_gen3_gz.urdf.xacro instead, which sets sim_gazebo=true. -->
+  <!-- ============================================================== -->
+  <xacro:if value="$(arg enable_kinova)">
+    <xacro:load_robot
+      parent="kinova_carrier"
+      prefix="kinova_"
+      arm="gen3"
+      gripper=""
+      gripper_joint_name="finger_joint"
+      gripper_max_velocity="100.0"
+      gripper_max_force="100.0"
+      dof="7"
+      vision="false"
+      robot_ip="0.0.0.0"
+      username="admin"
+      password="admin"
+      port="10000"
+      port_realtime="10001"
+      session_inactivity_timeout_ms="60000"
+      connection_inactivity_timeout_ms="2000"
+      use_internal_bus_gripper_comm="false"
+      use_fake_hardware="true"
+      fake_sensor_commands="false"
+      sim_gazebo="false"
+      sim_isaac="false"      
+      moveit_active="false">
+      <origin xyz="0 0 0.18" rpy="0 0.7838 3.1416" />
+    </xacro:load_robot>
+  </xacro:if>
+
+  <!-- ============================================================== -->
+  <!-- KUKA KR10 (prefix=kr10_) -->
+  <!-- ============================================================== -->
+  <!-- <xacro:if value="$(arg enable_kr10)"> -->
+  <!--   <xacro:kuka_kr10r1100sixx prefix="kr10_"/> -->
+  <!--   <!-\- The KR10 macro's internal joint is `kr10_base -> kr10_base_link`, so -->
+  <!--        `kr10_base` is the upstream root we have to attach to (not _base_link). -\-> -->
+  <!--   <joint name="desk_link-kr10_base" type="fixed"> -->
+  <!--     <parent link="desk_link"/> -->
+  <!--     <child link="kr10_base"/> -->
+  <!--     <origin xyz="$(arg kr10_x) $(arg kr10_y) $(arg kr10_z)" -->
+  <!--             rpy="$(arg kr10_roll) $(arg kr10_pitch) $(arg kr10_yaw)"/> -->
+  <!--   </joint> -->
+  <!-- </xacro:if> -->
+
+</robot>
