@@ -135,7 +135,7 @@ def launch_setup(context, *args, **kwargs):
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="both",
-        parameters=[{"use_sim_time": True}, robot_description],
+        parameters=[{"use_sim_time": use_sim_time}, robot_description],
     ) 
     
     # robot_state_publisher_node = Node(
@@ -183,7 +183,7 @@ def launch_setup(context, *args, **kwargs):
             moveit_config.joint_limits,
             #warehouse_ros_config,
             {
-                "use_sim_time": True,
+                "use_sim_time": use_sim_time,
                 "robot_description": robot_description_content,
             },
         ],
@@ -255,7 +255,7 @@ def launch_setup(context, *args, **kwargs):
             moveit_config.to_dict(),
             #warehouse_ros_config,
             {
-                "use_sim_time": True,
+                "use_sim_time": use_sim_time,
                 #"publish_robot_description_semantic": publish_robot_description_semantic,
                 "robot_description": robot_description_content,
                 "publish_robot_description_semantic": True,
@@ -301,7 +301,7 @@ def launch_setup(context, *args, **kwargs):
         parameters=[{
             'source_list': ['/ur/joint_states', '/kinova/joint_states'],
             'rate': 100,  # Publish at 30Hz
-            'use_sim_time': True,
+            'use_sim_time': use_sim_time,
         }],
         # Ensure it publishes to the global /joint_states topic
         #remappings=[('/joint_states', 'joint_states')]
@@ -347,7 +347,7 @@ def generate_launch_description():
     # General configuration
     declared_arguments.append(DeclareLaunchArgument("description_file", default_value=PathJoinSubstitution([FindPackageShare("dual_description"), "urdf", "dual.urdf.xacro"])))
     
-    declared_arguments.append(DeclareLaunchArgument("ur_controllers_file", default_value=PathJoinSubstitution([FindPackageShare("ur_dual_bringup"), "config", "myur_controller.yaml"])))
+    declared_arguments.append(DeclareLaunchArgument("ur_controllers_file", default_value=PathJoinSubstitution([FindPackageShare("ur_dual_bringup"), "config", "ur_controllers.yaml"])))
     declared_arguments.append(DeclareLaunchArgument("kinova_controllers_file", default_value=PathJoinSubstitution([FindPackageShare("dual_description"), "config", "kinova_controllers.yaml"])))
 
     declared_arguments.append(DeclareLaunchArgument("launch_rviz", default_value="true"))
