@@ -373,7 +373,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "initial_joint_controller",
-            default_value="scaled_joint_trajectory_controller",
+            default_value="joint_trajectory_controller",
             choices=[
                 "scaled_joint_trajectory_controller",
                 "joint_trajectory_controller",
@@ -399,7 +399,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "rviz_config_file",
             default_value=PathJoinSubstitution(
-                [FindPackageShare("ur_description"), "rviz", "view_robot.rviz"]
+                [FindPackageShare("ur_description"), "config", "rviz.rviz"]
             ),
             description="RViz config file (absolute path) to use when launching rviz.",
         )
