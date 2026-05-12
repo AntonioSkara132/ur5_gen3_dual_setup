@@ -66,6 +66,7 @@ def launch_setup(context, *args, **kwargs):
     gazebo_gui = LaunchConfiguration("gazebo_gui")
     world_file = LaunchConfiguration("world_file")
     robot_namespace = LaunchConfiguration("namespace")
+    use_sim_time = LaunchConfiguration("use_sim_time")
 
     robot_description_content = Command(
         [
@@ -107,7 +108,7 @@ def launch_setup(context, *args, **kwargs):
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="both",
-        parameters=[{"use_sim_time": True}, robot_description],
+        parameters=[{"use_sim_time": use_sim_time}, robot_description],
         namespace=robot_namespace,
         remappings=[
             ('/robot_description', '/ur/robot_description'),
@@ -327,6 +328,13 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "namespace",
             default_value="ur",
+            description="Node namespace",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "use_sim_time",
+            default_value="true",
             description="Node namespace",
         )
     )
