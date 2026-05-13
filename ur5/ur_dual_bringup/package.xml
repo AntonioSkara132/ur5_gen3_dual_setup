@@ -31,8 +31,12 @@
   <exec_depend>ur_description</exec_depend>
   <exec_depend>kortex_description</exec_depend>
   <exec_depend>ur_moveit_config</exec_depend>
+  <exec_depend>rf_lab_setup</exec_depend>
+  <exec_depend>rf_ur5e_description</exec_depend>
   <exec_depend>urdf</exec_depend>
   <exec_depend>xacro</exec_depend>
+  <exec_depend>rf_ur5e_description</exec_depend>
+
 
   <test_depend>ament_cmake_pytest</test_depend>
   <test_depend>launch_testing_ament_cmake</test_depend>
