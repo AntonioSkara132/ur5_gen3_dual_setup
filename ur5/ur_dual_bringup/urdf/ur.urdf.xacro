@@ -7,6 +7,8 @@
   <!-- ros2 control include -->
   <xacro:include filename="$(find ur_robot_driver)/urdf/ur.ros2_control.xacro" />
   <xacro:include filename="$(find ur_description)/urdf/inc/ur_transmissions.xacro" />
+  <xacro:include filename="$(find rf_lab_setup)/urdf/rf_welding_desk_macro.xacro"/>
+  <xacro:include filename="$(find rf_ur5e_description)/urdf/proxxon_drill_macro.xacro"/>
 
   <!-- possible 'ur_type' values: ur3, ur3e, ur5, ur5e, ur7e, ur10, ur10e, ur12e, ur16e, ur8long, ur15, ur18, ur20, ur30 -->
   <!-- the default value should raise an error in case this was called without defining the type -->
@@ -44,6 +46,14 @@
   <xacro:arg name="tool_device_name" default="/tmp/ttyUR" />
   <xacro:arg name="tool_tcp_port" default="54321" />
 
+  <!-- desk pose in world (default: top of desk at z = 0.89, level) -->
+  <xacro:arg name="desk_x" default="0"/>
+  <xacro:arg name="desk_y" default="0"/>
+  <xacro:arg name="desk_z" default="0.89"/>
+  <xacro:arg name="desk_roll"  default="0"/>
+  <xacro:arg name="desk_pitch" default="0"/>
+  <xacro:arg name="desk_yaw"   default="0"/>
+
     <!-- Simulation parameters -->
   <xacro:arg name="use_mock_hardware" default="false" />
   <xacro:arg name="mock_sensor_commands" default="false" />
@@ -55,33 +65,13 @@
   <!-- convert to property to use substitution in function -->
   <xacro:property name="initial_positions_file" default="$(arg initial_positions_file)"/>
 
-  <!-- create link fixed to the "world" -->
+
   <link name="world" />
 
-
-  <link name="ground_plane">
-    <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry>
-        <box size="5 5 0"/>
-      </geometry>
-      <material name="ground_white">
-        <color rgba="1 1 1 0.5"/>
-      </material>
-    </visual>
-    <collision>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry>
-        <box size="5 5 0"/>
-      </geometry>
-    </collision>
-  </link>
-
-  <joint name="ground_plane_joint" type="fixed">
-    <origin xyz="0 0 -0.01" rpy="0 0 0"/>
-    <parent link="world"/>
-    <child link="ground_plane"/>
-  </joint>
+  <xacro:rf_welding_desk parent="world">
+    <origin xyz="$(arg desk_x) $(arg desk_y) $(arg desk_z)"
+            rpy="$(arg desk_roll) $(arg desk_pitch) $(arg desk_yaw)"/>
+  </xacro:rf_welding_desk>
 
 
   <link name="ur_carrier">
@@ -101,15 +91,23 @@
   </link>    
 
   <joint name="ur_carrier_joint" type="fixed">
-    <origin xyz="-0.1 0 -0.01" rpy="0 0 0"/>
-    <parent link="ground_plane"/>
+    <origin xyz="0.6 0.7 -0.01" rpy="0 0 0"/>
+    <parent link="desk_link"/>
     <child link="ur_carrier"/>
   </joint>
 
+  <link name="tilted_frame"/>
+
+  <joint name="tilt_joint" type="fixed">
+    <parent link="ur_carrier"/>
+    <child link="tilted_frame"/>
+    <origin xyz="0 0 0.18" rpy="0 -0.7838 0"/>
+  </joint>
+  
   <xacro:ur_robot
     name="$(arg name)"
     tf_prefix="$(arg tf_prefix)"
-    parent="ur_carrier"
+    parent="tilted_frame"
     joint_limits_parameters_file="$(arg joint_limit_params)"
     kinematics_parameters_file="$(arg kinematics_params)"
     physical_parameters_file="$(arg physical_params)"
@@ -118,8 +116,11 @@
     safety_pos_margin="$(arg safety_pos_margin)"
     safety_k_position="$(arg safety_k_position)"
     >
-    <origin xyz="0 0 0.18" rpy="0 -0.785 0" />         <!-- position robot in the world -->
+    <origin xyz="0 0 0" rpy="0 0 1.57" />         <!-- position robot in the world -->
   </xacro:ur_robot>
+  <xacro:proxxon_drill prefix="$(arg tf_prefix)" parent="$(arg tf_prefix)flange">
+      <origin xyz="0.2982178 0 0" rpy="${pi/2.0} 0 ${pi/2.0}"/>
+  </xacro:proxxon_drill>
 
   <!-- ros2 control instance -->
   <xacro:ur_ros2_control

@@ -20,6 +20,8 @@
   <test_depend>ament_lint_common</test_depend>
   <depend>ur_description</depend>
   <depend>kortex_description</depend>
+  <depend>rf_lab_setup</depend>
+  <depend>rf_ur5e_description</depend>
   <depend>ur_simulation_gz</depend>
 
   <export>
