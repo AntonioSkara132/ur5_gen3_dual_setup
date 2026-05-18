@@ -68,7 +68,7 @@ def launch_setup(context):
     tool_tcp_port = LaunchConfiguration("tool_tcp_port")
     robot_namespace = LaunchConfiguration("namespace")
 
-    tf_prefix = "ur_"
+    tf_prefix = LaunchConfiguration("prefix")
 
     
     cm_path = PathJoinSubstitution(
@@ -81,7 +81,7 @@ def launch_setup(context):
         parameters=[
             LaunchConfiguration("update_rate_config_file"),
             ParameterFile(controllers_file, allow_substs=True),
-            {"tf_prefix": tf_prefix},
+            {"tf_prefix": tf_prefix, "namespace": robot_namespace},
             # We use the tf_prefix as substitution in there, so that's why we keep it as an
             # argument for this launchfile
 
@@ -242,6 +242,7 @@ def launch_setup(context):
         launch_arguments={
             "robot_ip": robot_ip,
             "ur_type": ur_type,
+            "tf_prefix": tf_prefix,
         }.items(),
     )
 
@@ -295,7 +296,7 @@ def generate_launch_description():
             "safety_limits",
             default_value="true",
             description="Enables the safety limits controller if true.",
-        )
+       )
     )
     declared_arguments.append(
         DeclareLaunchArgument(
@@ -335,7 +336,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "tf_prefix",
-            default_value="ur_",
+            default_value="ur5e_",
             description="tf_prefix of the joint names, useful for "
             "multi-robot setup. If changed, also joint names in the controllers' configuration "
             "have to be updated.",
@@ -538,6 +539,14 @@ def generate_launch_description():
             "namespace",
             default_value="ur",
             description="Node namespace",
+        )
+    )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "prefix",
+            default_value="ur5e_",
+            description="Prefix for tf frames and robot joints",
         )
     )
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
