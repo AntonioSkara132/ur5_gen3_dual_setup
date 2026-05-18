@@ -30,12 +30,21 @@
   <xacro:arg name="camera_height" default="480"/>
   <xacro:arg name="camera_fps" default="6"/>
   <xacro:arg name="ros_namespace" default=""/>
+
+  <!-- desk pose in world (default: top of desk at z = 0.89, level) -->
+  <xacro:arg name="desk_x" default="0"/>
+  <xacro:arg name="desk_y" default="0"/>
+  <xacro:arg name="desk_z" default="0.89"/>
+  <xacro:arg name="desk_roll"  default="0"/>
+  <xacro:arg name="desk_pitch" default="0"/>
+  <xacro:arg name="desk_yaw"   default="0"/>
   
   <xacro:arg name="simulation_controllers" default="$(find kortex_description)/arm/$(arg arm)/$(arg dof)dof/config/ros2_controllers.yaml" />
   <xacro:arg name="moveit_active" default="false"/>
 
   <!-- import main macro -->
   <xacro:include filename="$(find kortex_description)/robots/kortex_robot.xacro" />
+  <xacro:include filename="$(find rf_lab_setup)/urdf/rf_welding_desk_macro.xacro"/>
 
   <!-- initial position for simulations (Mock Hardware, Gazebo) -->
   <xacro:arg name="initial_positions_file" default="$(find kortex_description)/config/initial_positions.yaml"/>
@@ -48,29 +57,11 @@
 
   <link name="world" />
 
-  <link name="ground_plane">
-    <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry>
-        <box size="5 5 0"/>
-      </geometry>
-      <material name="ground_white">
-        <color rgba="1 1 1 0.5"/>
-      </material>
-    </visual>
-    <collision>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry>
-        <box size="5 5 0"/>
-      </geometry>
-    </collision>
-  </link>
+  <xacro:rf_welding_desk parent="world">
+    <origin xyz="$(arg desk_x) $(arg desk_y) $(arg desk_z)"
+            rpy="$(arg desk_roll) $(arg desk_pitch) $(arg desk_yaw)"/>
+  </xacro:rf_welding_desk>
 
-  <joint name="ground_plane_joint" type="fixed">
-    <origin xyz="0 0 -0.01" rpy="0 0 0"/>
-    <parent link="world"/>
-    <child link="ground_plane"/>
-  </joint>
 
   <link name="kinova_carrier">
     <visual>
@@ -89,8 +80,8 @@
   </link>    
 
   <joint name="kinova_carrier_joint" type="fixed">
-    <origin xyz="0.1 0 -0.01" rpy="0 0 3.14"/>
-    <parent link="ground_plane"/>
+    <origin xyz="0.9 0.7 -0.01" rpy="0 0 3.14"/>
+    <parent link="desk_link"/>
     <child link="kinova_carrier"/>
   </joint>
   
@@ -118,7 +109,7 @@
     sim_isaac="$(arg sim_isaac)"
     initial_positions="${xacro.load_yaml(initial_positions_file)}"
     moveit_active="$(arg moveit_active)">
-    <origin xyz="0 0 0.18" rpy="0 -0.785 0" />  <!-- position robot in the world -->
+    <origin xyz="0 0 0.18" rpy="0 0.7838 3.14" />  <!-- position robot in the world -->
   </xacro:load_robot>
 
 </robot>
